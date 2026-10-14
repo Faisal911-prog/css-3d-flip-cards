@@ -1,0 +1,198 @@
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #1c1410;
+  --ink: #fff7ec;
+  --muted: #d9c9b6;
+  --green: #3f7d3a;
+  --orange: #e8730c;
+  --red: #b3120f;
+  --radius: 22px;
+  --speed: .8s;
+  --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --body: "DM Sans", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  line-height: 1.5;
+}
+
+.intro { max-width: 36rem; margin: 0 auto; padding: 4rem 1.5rem 2rem; text-align: center; }
+.intro h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; }
+.intro p { margin-top: 1rem; color: var(--muted); }
+
+footer { padding: 3rem 1.5rem; text-align: center; color: var(--muted); font-size: .85rem; }
+
+/* ---------- Layout ---------- */
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 1.5rem;
+}
+
+/* ---------- The 3D flip ---------- */
+.card {
+  position: relative;
+  width: 300px;
+  height: 460px;
+  perspective: 1200px;              /* gives the flip its depth */
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;     /* keep front/back in 3D space */
+  transition: transform var(--speed) cubic-bezier(.3, 1.2, .4, 1);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .45);
+}
+
+.front, .back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  backface-visibility: hidden;      /* hide whichever side faces away */
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.back { transform: rotateY(180deg); background: #2a1f18; }
+
+/* The hidden checkbox is the "state": checked = flipped */
+.more {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.more:checked ~ .content { transform: rotateY(180deg); }
+.more:focus-visible ~ .content { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+.inner { height: 100%; padding: 1.6rem; display: flex; flex-direction: column; }
+
+/* ---------- Front ---------- */
+.front { background: var(--accent); }
+.front .inner { align-items: center; justify-content: space-between; text-align: center; }
+.front h2 { font-family: var(--display); font-weight: 800; font-size: 1.9rem; line-height: 1; }
+
+/* Per-card accent colours */
+.green  { --accent: var(--green); }
+.orange { --accent: var(--orange); }
+.red    { --accent: var(--red); }
+
+/* Bottle drawn only with CSS */
+.bottle {
+  position: relative;
+  width: 110px;
+  height: 200px;
+  margin-top: .5rem;
+  background: linear-gradient(90deg, rgba(0,0,0,.25), rgba(255,255,255,.12) 40%, rgba(0,0,0,.3)), #1a0f0a;
+  border-radius: 18px 18px 22px 22px;
+  box-shadow: 0 14px 20px rgba(0, 0, 0, .35);
+}
+.bottle::before {            /* neck */
+  content: "";
+  position: absolute;
+  left: 50%; top: -34px;
+  width: 38px; height: 40px;
+  transform: translateX(-50%);
+  background: #1a0f0a;
+  border-radius: 6px 6px 0 0;
+}
+.bottle::after {             /* cap */
+  content: "";
+  position: absolute;
+  left: 50%; top: -50px;
+  width: 46px; height: 18px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  border-radius: 5px;
+}
+.bottle span {               /* label */
+  position: absolute;
+  left: 10px; right: 10px; top: 70px;
+  padding: .7rem 0;
+  background: var(--ink);
+  color: #1a0f0a;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: .05em;
+  border-radius: 8px;
+}
+
+/* Heat meter */
+.heat { display: flex; gap: .4rem; }
+.heat i {
+  width: 18px; height: 18px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid rgba(255, 247, 236, .55);
+}
+.heat i.on { background: var(--ink); border-color: var(--ink); }
+
+/* ---------- Back ---------- */
+.back .inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto 1fr auto;
+  gap: .8rem;
+  align-content: start;
+}
+.back h3 {
+  grid-column: 1 / -1;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--accent);
+  filter: brightness(1.5);
+}
+.info { text-align: center; padding: .6rem .2rem; border-radius: 12px; background: rgba(255, 247, 236, .07); }
+.info span { display: block; font-family: var(--display); font-weight: 800; font-size: 1.5rem; line-height: 1.1; }
+.info small { color: var(--muted); font-size: .75rem; }
+
+.description { grid-column: 1 / -1; font-size: .92rem; color: var(--muted); }
+.description ul { margin-top: .7rem; padding-left: 1.1rem; }
+.description li { margin-bottom: .2rem; }
+
+.price { grid-column: 1 / -1; font-family: var(--display); font-weight: 800; font-size: 1.8rem; align-self: end; }
+
+/* ---------- Buttons ---------- */
+.button {
+  display: inline-block;
+  padding: .65rem 1.4rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #1a0f0a;
+  font-weight: 700;
+  font-size: .95rem;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+.button:hover { transform: translateY(-2px); background: #fff; }
+.buy { grid-column: 1 / -1; background: var(--accent); color: var(--ink); }
+.buy:hover { background: var(--accent); filter: brightness(1.15); }
+.return {
+  position: absolute;
+  right: 1.2rem; top: 1.2rem;
+  padding: .35rem .8rem;
+  background: rgba(255, 247, 236, .12);
+  color: var(--ink);
+}
+
+/* ---------- Small screens & motion ---------- */
+@media (max-width: 360px) { .card { width: 100%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .content { transition-duration: .01s; }
+  .button { transition: none; }
+}
