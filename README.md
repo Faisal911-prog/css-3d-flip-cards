@@ -2,7 +2,7 @@
 
 Internship Task 1: my own version of the CSS 3D clickable flip cards, used to advertise a (fictional) small-batch hot sauce brand.
 
-**Live site:** https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+**Live site:** https://Faisal911-prog.github.io/css-3d-flip-cards/
 
 ## How it works
 - Each card has a hidden checkbox. Clicking the "Details" label ticks it, and `:checked ~ .content` rotates the card 180° with `transform: rotateY(180deg)`.
